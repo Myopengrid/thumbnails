@@ -1,0 +1,37 @@
+{
+    "name": "Thumbnails Generator",
+    "slug": "thumbnails",
+    "version": "0.0.1",
+    "core_version": "0.0.1",
+    "description": "Image thumbnail generator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jefferson Costella",
+            "email": "jeff@localhost",
+            "role": "Lead Developer"
+        }
+    ],
+    "options": {
+            "handles": "thumbnails",
+            "auto": true
+    },
+    "menu": [
+        {
+            "main_menu" : "Settings",
+            "title"     : "Thumbnails",
+            "url"       : "thumbnails",
+            "class"     : "",
+            "li_class"  : "",
+            "children"  : []
+        },
+        {
+            "main_menu" : "Documentation",
+            "title"     : "Thumbnails",
+            "url"       : "thumbnails/docs",
+            "class"     : "",
+            "li_class"  : "",
+            "children"  : []
+        }
+    ]
+}
