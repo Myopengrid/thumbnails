@@ -25,6 +25,7 @@ class TestThumburl extends PHPUnit_Framework_TestCase
         if( !defined('ADM_URI')) define('ADM_URI', 'admin');
         
         \Bundle::start('thumbnails');
+        \Bundle::start('themes');
 
         $this->imagePath = realpath(dirname(__FILE__)).DS.'img'.DS.'image.jpg';
 
