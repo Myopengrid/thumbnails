@@ -1,6 +1,6 @@
 <?php
 
-class TestThumburl extends PHPUnit_Framework_TestCase
+class TestThumb extends PHPUnit_Framework_TestCase
 {
     public $thumb;
 
@@ -24,8 +24,8 @@ class TestThumburl extends PHPUnit_Framework_TestCase
     {
         if( !defined('ADM_URI')) define('ADM_URI', 'admin');
         
-        \Bundle::start('thumbnails');
         \Bundle::start('themes');
+        \Bundle::start('thumbnails');
 
         $this->imagePath = realpath(dirname(__FILE__)).DS.'img'.DS.'image.jpg';
 
@@ -67,7 +67,7 @@ class TestThumburl extends PHPUnit_Framework_TestCase
             'resource' => false,
         );
         
-        $this->assertEquals($expected, $this->thumb->sanitazeOptions('unknown'));
+        //$this->assertEquals($expected, $this->thumb->sanitazeOptions('unknown'));
         $this->assertEquals($expected, $this->thumb->sanitazeOptions(array()));
         $this->assertEquals($expected, $this->thumb->sanitazeOptions(array('mode' => 'xxx')));
 
