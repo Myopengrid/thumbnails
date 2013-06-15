@@ -1,6 +1,6 @@
 <?php
 
-class Thumburl_Schema_Task {
+class Thumbnails_Schema_Task {
 
     public function __construct()
     {
@@ -13,7 +13,7 @@ class Thumburl_Schema_Task {
 
     public function install()
     {
-        $module = Modules\Model\Module::where_slug('thumburl')->first();
+        $module = Modules\Model\Module::where_slug('thumbnails')->first();
         
         $thumburl_cache_status = array(
             'title'       => 'Image Caching', 
@@ -27,7 +27,7 @@ class Thumburl_Schema_Task {
             'section'     => '',
             'validation'  => '', 
             'is_gui'      => 1, 
-            'module_slug' => 'thumburl', 
+            'module_slug' => 'thumbnails', 
             'module_id'   => $module->id, 
             'order'       => 999, 
         );
@@ -45,7 +45,7 @@ class Thumburl_Schema_Task {
             'section'     => '',
             'validation'  => '', 
             'is_gui'      => 1, 
-            'module_slug' => 'thumburl', 
+            'module_slug' => 'thumbnails', 
             'module_id'   => $module->id, 
             'order'       => 999, 
         );
@@ -63,7 +63,7 @@ class Thumburl_Schema_Task {
             'section'     => '',
             'validation'  => '', 
             'is_gui'      => 1, 
-            'module_slug' => 'thumburl', 
+            'module_slug' => 'thumbnails', 
             'module_id'   => $module->id, 
             'order'       => 999, 
         );
@@ -81,7 +81,7 @@ class Thumburl_Schema_Task {
             'section'     => '',
             'validation'  => '', 
             'is_gui'      => 1, 
-            'module_slug' => 'thumburl', 
+            'module_slug' => 'thumbnails', 
             'module_id'   => $module->id, 
             'order'       => 999, 
         );
@@ -99,7 +99,7 @@ class Thumburl_Schema_Task {
             'section'     => '',
             'validation'  => '', 
             'is_gui'      => 1, 
-            'module_slug' => 'thumburl', 
+            'module_slug' => 'thumbnails', 
             'module_id'   => $module->id, 
             'order'       => 999, 
         );
@@ -111,7 +111,7 @@ class Thumburl_Schema_Task {
         //
         // REMOVE SETTINGS
         // 
-        $settings = Settings\Model\Setting::where_module_slug('thumburl')->get();
+        $settings = Settings\Model\Setting::where_module_slug('thumbnails')->get();
         
         if(isset($settings) and !empty($settings))
         {
