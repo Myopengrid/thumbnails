@@ -42,6 +42,8 @@ class Thumb
             'size'     => '150x150',
             'resource' => false,
         );
+
+        if( !array($options)) return $result;
         
         if(isset($options['mode']) and !empty($options['mode']))
         {

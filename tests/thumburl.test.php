@@ -68,8 +68,8 @@ class TestThumburl extends PHPUnit_Framework_TestCase
         );
         
         $this->assertEquals($expected, $this->thumb->sanitazeOptions('unknown'));
-        // $this->assertEquals($expected, $this->thumb->sanitazeOptions(array()));
-        // $this->assertEquals($expected, $this->thumb->sanitazeOptions(array('mode' => 'xxx')));
+        $this->assertEquals($expected, $this->thumb->sanitazeOptions(array()));
+        $this->assertEquals($expected, $this->thumb->sanitazeOptions(array('mode' => 'xxx')));
 
         $expected = array(
             'mode'     => 'inset',
