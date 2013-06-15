@@ -1,0 +1,4 @@
+thumbnails
+==========
+
+Thumbnails - MWI Module
