@@ -1,6 +1,8 @@
 ## Thumbnails 
 
-Thumbnails module for MWI
+Thumbnails Module for MWI
+
+[![Build Status](https://secure.travis-ci.org/Myopengrid/thumbnails.png)](http://travis-ci.org/Myopengrid/thumbnails)
 
 ## Installation
 
