@@ -3,7 +3,7 @@
 
 <div class="row">
     <div style="margin-top:15px;" class="span12">
-    {{ Form::open(URL::base().'/'.ADM_URI.'/'.'thumburl', 'PUT', array('class' => 'form-horizontal')) }}
+    {{ Form::open(URL::base().'/'.ADM_URI.'/'.'thumbnails', 'PUT', array('class' => 'form-horizontal')) }}
         <div style="display:none">
             {{ Form::token() }}
         </div>
