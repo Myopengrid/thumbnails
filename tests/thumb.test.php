@@ -67,7 +67,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
             'resource' => false,
         );
         
-        //$this->assertEquals($expected, $this->thumb->sanitazeOptions('unknown'));
+        $this->assertEquals($expected, $this->thumb->sanitazeOptions('somestring'));
         $this->assertEquals($expected, $this->thumb->sanitazeOptions(array()));
         $this->assertEquals($expected, $this->thumb->sanitazeOptions(array('mode' => 'xxx')));
 
