@@ -43,7 +43,7 @@ class Thumb
             'resource' => false,
         );
 
-        if( !array($options)) return $result;
+        if( !is_array($options)) return $result;
         
         if(isset($options['mode']) and !empty($options['mode']))
         {
