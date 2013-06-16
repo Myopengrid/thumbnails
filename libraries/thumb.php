@@ -1,7 +1,20 @@
-<?php namespace Thumbnails;
+<?php 
+
+/**
+* This file is part of the Thumbnails Mwi Module (https://github.com/Myopengrid/thumbnails).
+*
+*/
+
+namespace Thumbnails;
 
 use Laravel\Config;
 use Laravel\Log;
+
+/**
+ * Thumb Class
+ *
+ * @author Jefferson A. Costella <jefersonc@gmail.com>
+ */
 
 class Thumb
 {
@@ -130,7 +143,7 @@ class Thumb
 
     public function isLocal($url)
     {
-        return (bool)preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+        return !(bool)preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
     }
 
     /**
@@ -166,10 +179,10 @@ class Thumb
             if(file_exists($storage_path.DS.$imageName))
             {
                 $image     = $Imagine->open($storage_path.DS.$imageName);
-                $imageTime = filemtime($storage_path.DS.$imageName);
+                $imageTime = time()-filemtime($storage_path.DS.$imageName);
                 $cacheTime = $this->config->get('settings::core.thumbnails_cache_time', 30) * 86400;
-                
-                if((time()-$imageTime) > $cacheTime)
+
+                if($imageTime > $cacheTime)
                 {
                     Log::debug('Thumgurl: Recaching old thumbnail. ['.$storage_path.DS.$imageName.']');
                     return $resource ? $this->cacheImage($imageName, $path, $size, $storage_path, $mode) : $this->image_path.DS.$w.'x'.$h.DS.$imageName;

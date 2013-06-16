@@ -27,7 +27,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
         \Bundle::start('themes');
         \Bundle::start('thumbnails');
 
-        $this->imagePath = realpath(dirname(__FILE__)).DS.'img'.DS.'image.jpg';
+        $this->imagePath = realpath(dirname(__FILE__)).DS.'img';
 
         $this->config = new MockConfig;
 
@@ -48,7 +48,6 @@ class TestThumb extends PHPUnit_Framework_TestCase
 
     public function testStoragePath()
     {
-
         $this->assertSame('/tmp/public/thumbnails/cache', $this->thumb->storage_path);
     }
 
@@ -117,7 +116,6 @@ class TestThumb extends PHPUnit_Framework_TestCase
 
     public function testMode()
     {
-        
         $this->thumb->mode();
         $this->assertSame('outbound', $this->thumb->mode);
 
@@ -142,8 +140,14 @@ class TestThumb extends PHPUnit_Framework_TestCase
 
     public function testThumbnail()
     {
-        $thumbPath = $this->thumb->thumbnail($this->imagePath);
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
         $this->assertSame($this->imagePublicPath.'/150x150/image.jpg', $thumbPath);
+    }
+
+    public function testInvalidImageExtension()
+    {
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'bmp24.bmp');
+        $this->assertSame($this->imagePublicPath.'/150x150/not-found.jpg', $thumbPath);
     }
 
     public function testThumbnailFromUrl()
@@ -179,7 +183,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
             'image_name' => 'new_image_name',
         );
 
-        $thumbPath = $this->thumb->thumbnail($this->imagePath, $options);
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
         $this->assertSame($this->imagePublicPath.'/150x150/new_image_name.jpg', $thumbPath);
     }
 
@@ -191,7 +195,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
             'resource'   => false,
         );
 
-        $thumbPath = $this->thumb->thumbnail($this->imagePath, $options);
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
         $this->assertSame($this->imagePublicPath.'/117x24/image.jpg', $thumbPath);
 
         list($width, $height) = getimagesize('/tmp/public/thumbnails/cache/117x24/image.jpg');
@@ -201,7 +205,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
 
     public function testIfThumbReturnPath()
     {
-        $thumbPath = $this->thumb->thumbnail($this->imagePath);
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
         $this->assertSame($this->imagePublicPath.'/150x150/image.jpg', $thumbPath);
     }
 
@@ -230,7 +234,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
             'image_name' => 'new_image',
         );
 
-        $thumbPath = $this->thumb->thumbnail($this->imagePath, $options);
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
         $this->assertSame($this->imagePublicPath.'/200x220/new_image.jpg', $thumbPath);
 
         // Set only one value to be used as
@@ -241,7 +245,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
             'resource'   => false,
         );
 
-        $thumbPath = $this->thumb->thumbnail($this->imagePath, $options);
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
         $this->assertSame($this->imagePublicPath.'/180x180/image.jpg', $thumbPath);
 
         list($width, $height) = getimagesize('/tmp/public/thumbnails/cache/180x180/image.jpg');
@@ -258,6 +262,24 @@ class TestThumb extends PHPUnit_Framework_TestCase
 
         $image = $this->thumb->cacheImage('image.jpg', $imagePath, '200x200', '/tmp/public/thumbnails/new_folder', 'outbound', false);
         $this->assertInstanceOf('Imagine\Gd\Image', $image);
+    }
+
+    public function testIfPathIsLocal()
+    {
+        $this->assertTrue($this->thumb->isLocal($this->imagePath));
+        $this->assertFalse($this->thumb->isLocal('http://google.com/image.jpg'));
+    }
+
+    public function testRegenerateCacheImage()
+    {
+        // This test must be the last test to
+        // run so it will setup the cache time
+        // correctly
+        $this->config->set('settings::core.thumbnails_cache_time', 0);
+        
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
+        
+        $this->assertSame($this->imagePublicPath.'/150x150/image.jpg', $thumbPath);
     }
 }
 
@@ -281,6 +303,9 @@ class MockConfig extends \Laravel\Config {
                 break;
             case 'thumbnails::options.error_image';
                 return \Bundle::path('thumbnails').'images'.DS.'error'.DS.'not-found.jpg';
+                break;
+            case 'settings::core.thumbnails_cache_time':
+                return parent::get($key, $default);
                 break;
             
             default:
