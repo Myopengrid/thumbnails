@@ -28,7 +28,7 @@
         {
             "main_menu" : "Documentation",
             "title"     : "Thumbnails",
-            "url"       : "thumbnails/docs",
+            "url"       : "thumbnails/docs/",
             "class"     : "",
             "li_class"  : "",
             "children"  : []
