@@ -213,7 +213,28 @@ class Thumb
 
         extract($this->sanitazeSize($size));
 
-        $thumb = $Imagine->open($path)->thumbnail($this->boxSize($size), $this->mode($mode));
+        $thumb = null;
+
+        if($this->isLocal($path))
+        {
+            $path = path('public').$path;
+            if(file_exists($path))
+            {
+                $thumb = $Imagine->open($path)->thumbnail($this->boxSize($size), $this->mode($mode));        
+            }
+            else
+            {
+                Log::debug('Thumbnails: Image not found ['.$path.'] returning not found image.');
+                // Return not-found image
+                $thumb = $Imagine->open($this->config->get('thumbnails::options.error_image'))
+                                 ->thumbnail($this->boxSize($size), $this->mode($mode));
+            }
+        }
+        else
+        {
+            $thumb = $Imagine->open($path)->thumbnail($this->boxSize($size), $this->mode($mode));
+        }
+
             
         $thumbSize = $thumb->getSize();
         
