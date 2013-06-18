@@ -141,7 +141,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
     public function testThumbnail()
     {
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
-        $this->assertSame($this->imagePublicPath.'/150x150/image.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/150x150/outbound-image.jpg', $thumbPath);
     }
 
     public function testInvalidImageExtension()
@@ -152,7 +152,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
 
     public function testThumbnailFromUrl()
     {
-        $parameters = 'thumb/500x500/http://www.google.com/images/srpr/logo4w.png';
+        $parameters = 'thumb/500x500/outbound/http://www.google.com/images/srpr/logo4w.png';
         // Since we are calling the
         // controller directlly here
         // we need to process logic
@@ -164,8 +164,8 @@ class TestThumb extends PHPUnit_Framework_TestCase
         $response = Controller::call('thumbnails::frontend.thumbnails@thumb', $route);
         $this->assertInstanceOf('Laravel\\Response', $response);
         
-        
-        $parameters = 'thumb/230x230'.DS.$this->imagePath;
+        // testing with mode and zize
+        $parameters = 'thumb/230x230/inbound/'.$this->imagePath;
         
         // Route logic
         $route = explode('/', $parameters);
@@ -184,7 +184,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
         );
 
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
-        $this->assertSame($this->imagePublicPath.'/150x150/new_image_name.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/150x150/outbound-new_image_name.jpg', $thumbPath);
     }
 
     public function testImageHaveRightSize()
@@ -196,9 +196,9 @@ class TestThumb extends PHPUnit_Framework_TestCase
         );
 
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
-        $this->assertSame($this->imagePublicPath.'/117x24/image.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/117x24/outbound-image.jpg', $thumbPath);
 
-        list($width, $height) = getimagesize('/tmp/public/thumbnails/cache/117x24/image.jpg');
+        list($width, $height) = getimagesize('/tmp/public/thumbnails/cache/117x24/outbound-image.jpg');
         $this->assertEquals(117, $width);
         $this->assertEquals(24, $height);
     }
@@ -206,7 +206,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
     public function testIfThumbReturnPath()
     {
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
-        $this->assertSame($this->imagePublicPath.'/150x150/image.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/150x150/outbound-image.jpg', $thumbPath);
     }
 
     public function testIfReturnResource()
@@ -222,7 +222,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
     public function testExternalImage()
     {
         $thumbPath = $this->thumb->thumbnail('http://www.google.com/images/srpr/logo4w.png');
-        $this->assertSame($this->imagePublicPath.'/150x150/logo4w.png', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/150x150/outbound-logo4w.png', $thumbPath);
     }
 
     public function testImageWithOptions()
@@ -235,7 +235,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
         );
 
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
-        $this->assertSame($this->imagePublicPath.'/200x220/new_image.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/200x220/outbound-new_image.jpg', $thumbPath);
 
         // Set only one value to be used as
         // width and height is allowed
@@ -246,9 +246,9 @@ class TestThumb extends PHPUnit_Framework_TestCase
         );
 
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
-        $this->assertSame($this->imagePublicPath.'/180x180/image.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/180x180/inset-image.jpg', $thumbPath);
 
-        list($width, $height) = getimagesize('/tmp/public/thumbnails/cache/180x180/image.jpg');
+        list($width, $height) = getimagesize('/tmp/public/thumbnails/cache/180x180/inset-image.jpg');
         $this->assertEquals(180, $width);
         $this->assertEquals(180, $height);
     }
@@ -267,7 +267,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
     public function testIfPathIsLocal()
     {
         $this->assertTrue($this->thumb->isLocal($this->imagePath));
-        $this->assertFalse($this->thumb->isLocal('http://google.com/image.jpg'));
+        $this->assertFalse($this->thumb->isLocal('http://google.com/outbound-image.jpg'));
     }
 
     public function testRegenerateCacheImage()
@@ -279,7 +279,7 @@ class TestThumb extends PHPUnit_Framework_TestCase
         
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
         
-        $this->assertSame($this->imagePublicPath.'/150x150/image.jpg', $thumbPath);
+        $this->assertSame($this->imagePublicPath.'/150x150/outbound-image.jpg', $thumbPath);
     }
 }
 
