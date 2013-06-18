@@ -161,11 +161,11 @@ class Thumb
         // extract $mode, $size and $resource variables
         extract($this->sanitazeOptions($options));
         
-        $imageName = $this->extractImageName($path);
+        $imageName = $mode.'-'.$this->extractImageName($path);
 
         if(isset($options['image_name']) and !empty($options['image_name']))
         {
-            $imageName = $options['image_name'].'.'.get_file_extension($imageName);
+            $imageName = $mode.'-'.$options['image_name'].'.'.get_file_extension($imageName);
         }
 
         // Extract the $w and $h variables
@@ -211,11 +211,10 @@ class Thumb
     {
         $Imagine =& $this->imagine;
 
-        // Extract the $w and $h variables
         extract($this->sanitazeSize($size));
 
         $thumb = $Imagine->open($path)->thumbnail($this->boxSize($size), $this->mode($mode));
-        
+            
         $thumbSize = $thumb->getSize();
         
         $collage = $Imagine->create(new \Imagine\Image\Box($w, $h), new \Imagine\Image\Color('#fff', 100));
