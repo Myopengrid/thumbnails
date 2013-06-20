@@ -174,7 +174,6 @@ class TestThumb extends PHPUnit_Framework_TestCase
         
         $response = Controller::call('thumbnails::frontend.thumbnails@thumb', $route);
         $this->assertInstanceOf('Laravel\\Response', $response);
-
     }
 
     public function testImageWithCustomName()
@@ -280,6 +279,61 @@ class TestThumb extends PHPUnit_Framework_TestCase
         $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg');
         
         $this->assertSame($this->imagePublicPath.'/150x150/outbound-image.jpg', $thumbPath);
+    }
+
+    public function testDeleteImage()
+    {
+        $options = array(
+            'mode'       => 'outbound',
+            'size'       => '203x223',
+            'resource'   => false,
+            'image_name' => 'new_image',
+        );
+
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
+        $this->assertSame($this->imagePublicPath.'/203x223/outbound-new_image.jpg', $thumbPath);
+
+
+        $imageAbsolutePath = $this->thumb->storage_path.DS.'203x223'.DS.'outbound-new_image.jpg';
+        
+        Event::fire('thumbnails.delete', $imageAbsolutePath);
+        
+        $this->assertFalse(file_exists($imageAbsolutePath));
+    }
+
+    public function testDeleteMultipleImages()
+    {
+        $options = array(
+            'mode'       => 'outbound',
+            'size'       => '203x222',
+            'resource'   => false,
+            'image_name' => 'new_image',
+        );
+
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
+        $this->assertSame($this->imagePublicPath.'/203x222/outbound-new_image.jpg', $thumbPath);
+        $imageAbsolutePath  = $this->thumb->storage_path.DS.'203x222'.DS.'outbound-new_image.jpg';
+
+        $options = array(
+            'mode'       => 'outbound',
+            'size'       => '203x224',
+            'resource'   => false,
+            'image_name' => 'new_image2',
+        );
+
+        $thumbPath = $this->thumb->thumbnail($this->imagePath.DS.'image.jpg', $options);
+        $this->assertSame($this->imagePublicPath.'/203x224/outbound-new_image2.jpg', $thumbPath);
+        $imageAbsolutePath1 = $this->thumb->storage_path.DS.'203x224'.DS.'outbound-new_image2.jpg';
+
+        $imagePaths = array(
+            $imageAbsolutePath,
+            $imageAbsolutePath1,
+        );
+        
+        Event::fire('thumbnails.delete', array($imagePaths));
+        
+        $this->assertFalse(file_exists($imageAbsolutePath));
+        $this->assertFalse(file_exists($imageAbsolutePath1));
     }
 }
 
