@@ -10,7 +10,7 @@ return array(
     |'Gd' or 'Imagick' or 'Gmagick'
     |
     */
-    'error_image' => Bundle::path('thumbnails').'images'.DS.'error'.DS.'not-found.jpg',
+    'error_image' => Bundle::path('thumbnails').'images/error/not-found.jpg',
 
     /*
     |--------------------------------------------------------------------------
