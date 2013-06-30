@@ -159,7 +159,12 @@ class Thumb
         $Imagine =& $this->imagine;
 
         // extract $mode, $size and $resource variables
-        extract($this->sanitazeOptions($options));
+        $opt      = $this->sanitazeOptions($options);
+        $mode     = $opt['mode'];
+        $size     = $opt['size'];
+        $resource = $opt['resource'];
+        // php 5.3 throw exception
+        // extract($this->sanitazeOptions($options));
         
         $imageName = $mode.'-'.$this->extractImageName($path);
 
@@ -169,7 +174,11 @@ class Thumb
         }
 
         // Extract the $w and $h variables
-        extract($this->sanitazeSize($size));
+        $opt = $this->sanitazeSize($size);
+        $w   = $opt['w'];
+        $h   = $opt['h'];
+        // php 5.3 throw exception
+        //extract($this->sanitazeSize($size));
 
         $storage_path = $this->storage_path.DS.$w.'x'.$h;
         
@@ -211,7 +220,12 @@ class Thumb
     {
         $Imagine =& $this->imagine;
 
-        extract($this->sanitazeSize($size));
+        // Extract the $w and $h variables
+        $opt = $this->sanitazeSize($size);
+        $w   = $opt['w'];
+        $h   = $opt['h'];
+        // php 5.3 throw exception
+        // extract($this->sanitazeSize($size));
 
         $thumb = null;
 
