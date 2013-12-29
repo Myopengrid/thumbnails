@@ -37,7 +37,7 @@ class Thumb
     {
         $this->config = is_null($config) ? new Config : $config;
 
-        $this->storage_path = is_null($path) ? $this->config->get('settings::core.thumbnails_storage_path', path('public').DS.'media'.DS.'thumbnails'.DS.'cached') : $path;
+        $this->storage_path = is_null($path) ? $this->config->get('settings::core.thumbnails_storage_path', path('public').'media'.DS.'thumbnails'.DS.'cached') : $path;
 
         $this->image_path = $this->config->get('thumbnails::options.image_path', 'media/thumbnails/cached');
 
